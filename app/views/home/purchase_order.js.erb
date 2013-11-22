@@ -1,0 +1,31 @@
+<script>
+var lot_budgets = {};
+var product_prices = {};
+
+<% @lots.each do |lot| %>
+	lot_budgets[<%=lot.id%>] = <%= lot.left_budget %>;
+<% end %>
+
+<% products = @supplier.products %>
+
+<% products.each do |product| %>
+	product_prices[<%=product.id%>] = <%= product.price %>;
+<% end %>
+
+if (!lot_budgets.empty)
+	$("#left_budget").text(<%= @lots.first.left_budget %>);
+
+if (!product_prices.empty)
+	$("span#product_price").text(<%= products.first.price if products.size > 0 %>);
+
+$("select#lots").on("change", function(){
+	var index = parseInt($("select#lots option:selected").val());
+	$("#left_budget").text(lot_budgets[index]);
+});
+
+$("select#products").on("change", function(){
+	var index = parseInt($("select#products option:selected").val());
+	$("span#product_price").text(product_prices[index]);
+});
+
+</script>
